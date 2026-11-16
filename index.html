@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MONO STUDIO | Fashion Store</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#fff;color:#111}
+header{padding:20px 6%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee;position:sticky;top:0;background:#fff;z-index:10}
+.logo{font-size:23px;font-weight:900;letter-spacing:3px}
+nav a{color:#111;text-decoration:none;margin-left:20px;font-size:13px}
+.hero{background:#111;color:#fff;padding:85px 8%;min-height:390px;display:flex;align-items:center}
+.hero h1{font-size:clamp(38px,7vw,70px);line-height:1.05;max-width:650px}
+.hero p{color:#bbb;margin:20px 0;font-size:15px}
+.btn{display:inline-block;background:#fff;color:#111;padding:14px 25px;text-decoration:none;font-weight:bold;font-size:13px;border:1px solid #fff;cursor:pointer}
+section{padding:65px 6%}
+.section-head{text-align:center;margin-bottom:30px}
+.section-head h2{font-size:30px;margin-bottom:10px}
+.section-head p{color:#777;font-size:14px}
+.filters{text-align:center;margin-bottom:30px}
+.filters button{background:white;border:1px solid #ddd;padding:10px 18px;margin:4px;cursor:pointer}
+.filters button.active,.filters button:hover{background:#111;color:white}
+.products{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.product{border:1px solid #eee;padding-bottom:18px}
+.product img{width:100%;height:300px;object-fit:cover;background:#eee}
+.product-info{padding:15px}
+.product-info h3{font-size:16px;margin-bottom:8px}
+.price{font-weight:bold;margin-bottom:13px}
+.product-info button{width:100%;padding:11px;background:#111;color:white;border:0;cursor:pointer}
+.product-info button:hover{background:#444}
+.about{background:#f5f5f5;text-align:center}
+.about p{max-width:650px;margin:15px auto;color:#555;line-height:1.7}
+.contact{text-align:center;background:#111;color:white}
+.contact p{color:#bbb;margin:15px 0 25px}
+.contact a{display:inline-block;margin:5px}
+footer{text-align:center;padding:25px;color:#777;font-size:12px}
+.bag{font-size:13px;font-weight:bold}
+@media(max-width:700px){
+ header{padding:17px 5%}
+ nav a{margin-left:9px;font-size:11px}
+ .products{grid-template-columns:repeat(2,1fr);gap:12px}
+ .product img{height:210px}
+ section{padding:48px 5%}
+ .hero{padding:65px 7%}
+}
+@media(max-width:420px){
+ .products{grid-template-columns:1fr}
+ .product img{height:300px}
+ nav a{margin-left:6px;font-size:10px}
+}
+</style>
+</head>
+<body>
+
+<header>
+ <div class="logo">MONO.</div>
+ <nav>
+  <a href="#home">Home</a>
+  <a href="#shop">Shop</a>
+  <a href="#about">About</a>
+  <a href="#contact">Contact</a>
+ </nav>
+ <div class="bag">BAG (<span id="count">0</span>)</div>
+</header>
+
+<main>
+<section class="hero" id="home">
+ <div>
+  <p>THE NEW COLLECTION</p>
+  <h1>STYLE IS<br>YOUR IDENTITY.</h1>
+  <p>Discover timeless fashion. Simple, bold and made for you.</p>
+  <a class="btn" href="#shop">SHOP COLLECTION</a>
+ </div>
+</section>
+
+<section id="shop">
+ <div class="section-head">
+  <h2>OUR COLLECTION</h2>
+  <p>Carefully selected pieces for every style.</p>
+ </div>
+
+ <div class="filters">
+  <button class="active" onclick="filterProducts('All',this)">All</button>
+  <button onclick="filterProducts('Men',this)">Men</button>
+  <button onclick="filterProducts('Women',this)">Women</button>
+  <button onclick="filterProducts('Accessories',this)">Accessories</button>
+ </div>
+
+ <div class="products" id="products"></div>
+</section>
+
+<section class="about" id="about">
+ <h2>ABOUT MONO STUDIO</h2>
+ <p>MONO STUDIO is a fashion store concept built around simplicity, confidence and timeless style. We believe great style does not need to be complicated.</p>
+</section>
+
+<section class="contact" id="contact">
+ <h2>LET'S CONNECT</h2>
+ <p>This is a sample fashion store project created by ABDULREGULAR Agency.</p>
+ <a class="btn" href="https://wa.me/2348129139434" target="_blank">CONTACT THE AGENCY</a>
+</section>
+</main>
+
+<footer>
+ © 2026 MONO STUDIO | Demo website by ABDULREGULAR Agency
+</footer>
+
+<script>
+const items=[
+ {name:"Classic Black Jacket",category:"Men",price:"₦35,000",image:"https://images.unsplash.com/photo-1591047139829-d91aecb6caea?w=700"},
+ {name:"Minimal White Shirt",category:"Men",price:"₦18,000",image:"https://images.unsplash.com/photo-1603252109303-2751441dd157?w=700"},
+ {name:"Elegant Fashion Dress",category:"Women",price:"₦28,000",image:"https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=700"},
+ {name:"Modern Women's Outfit",category:"Women",price:"₦32,000",image:"https://images.unsplash.com/photo-1483985988355-763728e1935b?w=700"},
+ {name:"Classic Wrist Watch",category:"Accessories",price:"₦22,000",image:"https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=700"},
+ {name:"Leather Fashion Bag",category:"Accessories",price:"₦25,000",image:"https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=700"}
+];
+let bagCount=0;
+function showProducts(category="All"){
+ const area=document.getElementById("products");
+ area.innerHTML="";
+ items.filter(item=>category==="All"||item.category===category).forEach(item=>{
+  area.innerHTML+=`
+   <article class="product">
+    <img src="${item.image}" alt="${item.name}">
+    <div class="product-info">
+     <h3>${item.name}</h3>
+     <div class="price">${item.price}</div>
+     <button onclick="addToBag()">ADD TO BAG</button>
+    </div>
+   </article>`;
+ });
+}
+function filterProducts(category,button){
+ document.querySelectorAll(".filters button").forEach(b=>b.classList.remove("active"));
+ button.classList.add("active");
+ showProducts(category);
+}
+function addToBag(){
+ bagCount++;
+ document.getElementById("count").textContent=bagCount;
+}
+showProducts();
+</script>
+</body>
+</html>
+￼Enter
