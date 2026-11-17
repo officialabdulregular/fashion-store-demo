@@ -49,6 +49,63 @@ footer{text-align:center;padding:25px;color:#777;font-size:12px}
  .products{grid-template-columns:1fr}
  .product img{height:300px}
  nav a{margin-left:6px;font-size:10px}
+/* SHOPPING BAG DESIGN */
+.cart-panel {
+  display: none;
+  background: #fff;
+  color: #111;
+  padding: 30px 5%;
+  border-bottom: 1px solid #ddd;
+}
+
+.cart-panel h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.cart-item-info {
+  flex: 1;
+}
+
+.cart-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cart-actions button {
+  padding: 8px 12px;
+  border: 1px solid #111;
+  background: white;
+  cursor: pointer;
+}
+
+.cart-actions .remove-btn {
+  background: #111;
+  color: white;
+}
+
+.cart-summary {
+  margin-top: 20px;
+  text-align: right;
+  font-weight: bold;
+}
+
+.continue-btn {
+  padding: 12px 20px;
+  background: #111;
+  color: white;
+  border: none;
+  cursor: pointer;
 }
 </style>
 </head>
