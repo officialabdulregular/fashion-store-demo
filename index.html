@@ -62,9 +62,16 @@ footer{text-align:center;padding:25px;color:#777;font-size:12px}
   <a href="#about">About</a>
   <a href="#contact">Contact</a>
  </nav>
- <div class="bag">BAG (<span id="count">0</span>)</div>
+ <div class="bag" onclick="openCart()" style="cursor:pointer;">
+BAG (<span id="count">0</span>)
+ </div>
 </header>
-
+<div id="cartPanel" style="display:none; padding:20px; background:white; color:black;">
+  <h2>YOUR SHOPPING BAG</h2>
+  <div id="cartItems"></div>
+  <h3 id="cartTotal">Total: ₦0</h3>
+  <button onclick="closeCart()">CONTINUE SHOPPING</button>
+</div>
 <main>
 <section class="hero" id="home">
  <div>
@@ -151,6 +158,51 @@ function addToBag(itemName) {
 
   const count = bag.reduce((sum, item) => sum + item.quantity, 0);
   document.getElementById("count").textContent = count;
+ }
+function openCart() {
+  renderCart();
+  document.getElementById("cartPanel").style.display = "block";
+}
+
+function closeCart() {
+  document.getElementById("cartPanel").style.display = "none";
+}
+
+function renderCart() {
+  const area = document.getElementById("cartItems");
+
+  if (bag.length === 0) {
+    area.innerHTML = "<p>Your bag is empty.</p>";
+  } else {
+    area.innerHTML = bag.map((item, index) => `
+      <div style="padding:12px; border-bottom:1px solid #ddd;">
+        <strong>${item.name}</strong>
+        <p>${item.price}</p>
+        <button onclick="changeQuantity(${index}, -1)">−</button>
+        ${item.quantity}
+        <button onclick="changeQuantity(${index}, 1)">+</button>
+      </div>
+    `).join("");
+  }
+
+  const total = bag.reduce((sum, item) =>
+    sum + Number(item.price.replace(/[₦,]/g, "")) * item.quantity, 0
+  );
+
+  document.getElementById("cartTotal").textContent =
+    "Total: ₦" + total.toLocaleString("en-NG");
+}
+
+function changeQuantity(index, amount) {
+  bag[index].quantity += amount;
+
+  if (bag[index].quantity <= 0) {
+    bag.splice(index, 1);
+  }
+
+  const count = bag.reduce((sum, item) => sum + item.quantity, 0);
+  document.getElementById("count").textContent = count;
+  renderCart();
 }
 showProducts();
 </script>
